@@ -1,0 +1,10 @@
+streamlit
+pandas
+numpy
+opencv-python
+scikit-learn
+mediapipe
+matplotlib
+librosa
+tensorflow
+sqlalchemy
