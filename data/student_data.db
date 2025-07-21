@@ -1,0 +1,33 @@
+import sqlite3
+
+conn = sqlite3.connect("data/student_data.db")
+cursor = conn.cursor()
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS students (
+    student_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    age INTEGER,
+    gender TEXT,
+    batch_id TEXT,
+    skill_level TEXT,
+    attendance_percent REAL,
+    engagement_score REAL
+)
+""")
+
+sample_data = [
+    ("Aarav", 15, "Male", "B101", "Beginner", 85, 7),
+    ("Ishita", 17, "Female", "B101", "Intermediate", 65, 6),
+    ("Rahul", 16, "Male", "B102", "Beginner", 45, 3),
+    ("Sneha", 18, "Female", "B103", "Advanced", 90, 9),
+    ("Aryan", 15, "Male", "B102", "Beginner", 50, 4)
+]
+
+cursor.executemany("""
+INSERT INTO students (name, age, gender, batch_id, skill_level, attendance_percent, engagement_score)
+VALUES (?, ?, ?, ?, ?, ?, ?)
+""", sample_data)
+
+conn.commit()
+conn.close()
