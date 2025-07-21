@@ -8,3 +8,5 @@ matplotlib
 librosa
 tensorflow
 sqlalchemy
+mediapipe
+opencv-python
