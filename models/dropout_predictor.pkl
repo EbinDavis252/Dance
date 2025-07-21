@@ -1,0 +1,26 @@
+# train_dropout_model.py
+
+import pandas as pd
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+import pickle
+
+# Sample dataset
+data = {
+    'attendance_percent': [80, 60, 40, 90, 30, 95, 50],
+    'engagement_score': [8, 6, 3, 9, 2, 10, 4],
+    'dropout': [0, 1, 1, 0, 1, 0, 1]
+}
+
+df = pd.DataFrame(data)
+X = df[['attendance_percent', 'engagement_score']]
+y = df['dropout']
+
+# Train model
+model = LogisticRegression()
+model.fit(X, y)
+
+# Save the model
+with open("models/dropout_predictor.pkl", "wb") as f:
+    pickle.dump(model, f)
+
