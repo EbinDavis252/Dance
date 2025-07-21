@@ -34,3 +34,25 @@ if menu == "1. Upload Dance Video":
         st.video(file_path)
 
         st.info("Your video is saved and ready for Talent Evaluation and Pose Correction.")
+# ---- 2. Talent Evaluator ----
+elif menu == "2. Talent Evaluator":
+    st.header("🤖 AI Talent Evaluation")
+
+    uploaded_files = os.listdir("data/video_uploads")
+    if not uploaded_files:
+        st.warning("No videos uploaded yet. Please upload a video first.")
+    else:
+        selected_video = st.selectbox("Select a video to evaluate", uploaded_files)
+        video_path = os.path.join("data/video_uploads", selected_video)
+        st.video(video_path)
+
+        if st.button("Run Evaluation"):
+            from modules import talent_evaluator
+            with st.spinner("Analyzing video with AI..."):
+                scores = talent_evaluator.analyze_dance_video(video_path)
+
+            st.success("Evaluation Complete!")
+            st.metric("Pose Accuracy Score", scores["pose_accuracy"], "out of 10")
+            st.metric("Rhythm / Movement Score", scores["rhythm"], "out of 10")
+            st.metric("Overall Score", scores["overall"], "out of 10")
+        
