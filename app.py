@@ -55,4 +55,24 @@ elif menu == "2. Talent Evaluator":
             st.metric("Pose Accuracy Score", scores["pose_accuracy"], "out of 10")
             st.metric("Rhythm / Movement Score", scores["rhythm"], "out of 10")
             st.metric("Overall Score", scores["overall"], "out of 10")
+# ---- 3. Academy Analytics ----
+elif menu == "3. Academy Analytics":
+    st.header("🏫 Dance Academy Student Dashboard")
+    
+    from modules import academy_analytics
+    
+    db_path = "data/student_data.db"
+    model_path = "models/dropout_predictor.pkl"
+
+    try:
+        df = academy_analytics.load_students_from_db(db_path)
+        df_with_risk = academy_analytics.predict_dropout_risk(df, model_path)
+
+        st.dataframe(df_with_risk)
+
+        high_risk_count = df_with_risk[df_with_risk["dropout_flag"] == "⚠️ High Risk"].shape[0]
+        st.warning(f"⚠️ {high_risk_count} student(s) are at high risk of dropout.")
+    except Exception as e:
+        st.error("Failed to load data or model. Please check database or model file.")
+        st.text(str(e))
         
