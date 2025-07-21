@@ -34,6 +34,7 @@ if menu == "1. Upload Dance Video":
         st.video(file_path)
 
         st.info("Your video is saved and ready for Talent Evaluation and Pose Correction.")
+
 # ---- 2. Talent Evaluator ----
 elif menu == "2. Talent Evaluator":
     st.header("🤖 AI Talent Evaluation")
@@ -55,6 +56,7 @@ elif menu == "2. Talent Evaluator":
             st.metric("Pose Accuracy Score", scores["pose_accuracy"], "out of 10")
             st.metric("Rhythm / Movement Score", scores["rhythm"], "out of 10")
             st.metric("Overall Score", scores["overall"], "out of 10")
+
 # ---- 3. Academy Analytics ----
 elif menu == "3. Academy Analytics":
     st.header("🏫 Dance Academy Student Dashboard")
@@ -75,4 +77,34 @@ elif menu == "3. Academy Analytics":
     except Exception as e:
         st.error("Failed to load data or model. Please check database or model file.")
         st.text(str(e))
+
+# ---- 4. Choreo Recommender ----
+elif menu == "4. Choreo Recommender":
+    st.header("🎭 AI-Powered Choreography Recommender")
+    from modules import recommender
+
+    genre = st.selectbox("Select Genre", ["Classical", "Bollywood", "Folk", "Contemporary", "Bhangra"])
+    event_type = st.selectbox("Select Event Type", ["Wedding", "Stage Show", "Navratri", "School Function"])
+    skill = st.selectbox("Select Skill Level", ["Beginner", "Intermediate", "Advanced"])
+
+    if st.button("🔍 Recommend Choreography"):
+        user_input = {
+            "genre": genre,
+            "event_type": event_type,
+            "skill_level": skill
+        }
+
+        try:
+            choreo_data = recommender.load_choreo_data("data/choreography_data.csv")
+            results = recommender.recommend_choreos(user_input, choreo_data)
+
+            st.subheader("📋 Top Recommendations")
+            for _, row in results.iterrows():
+                st.markdown(f"**🎬 {row['title']}**")
+                st.markdown(f"🎭 Genre: {row['genre']} | 🎉 Event: {row['event_type']} | 🧠 Skill: {row['skill_level']}")
+                st.markdown(f"📝 {row['description']}")
+                st.markdown("---")
+        except Exception as e:
+            st.error("Failed to recommend choreographies. Check your CSV or code.")
+            st.text(str(e))
         
