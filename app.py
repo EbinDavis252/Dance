@@ -108,3 +108,23 @@ elif menu == "4. Choreo Recommender":
             st.error("Failed to recommend choreographies. Check your CSV or code.")
             st.text(str(e))
         
+# ---- 5. Pose Feedback ----
+elif menu == "5. Pose Feedback":
+    st.header("🕺 Pose Correction & Feedback System")
+
+    uploaded_video = st.file_uploader("📤 Upload Dance Video (.mp4)", type=["mp4"])
+    if uploaded_video:
+        tfile = tempfile.NamedTemporaryFile(delete=False)
+        tfile.write(uploaded_video.read())
+        video_path = tfile.name
+
+        from modules import pose_feedback
+        feedback = pose_feedback.analyze_dance_video(video_path)
+
+        st.subheader("✅ Feedback Summary:")
+        for item in feedback:
+            st.markdown(f"**Frame {item['frame']}** - {item['feedback']} \n")
+            st.markdown(f"💡 Tip: {item['tips']}")
+            st.markdown("---")
+
+        st.video(video_path)
