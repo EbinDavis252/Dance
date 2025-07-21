@@ -128,3 +128,14 @@ elif menu == "5. Pose Feedback":
             st.markdown("---")
 
         st.video(video_path)
+
+# ---- 6. Knowledge AI Assistant ----
+elif menu == "6. Knowledge AI Assistant":
+    st.header("🎓 Indian Dance Culture AI Assistant")
+    st.markdown("Ask anything about classical dance forms, instruments, costumes, and more!")
+
+    user_q = st.text_input("❓ Ask your question:")
+    if user_q:
+        from modules import knowledge_ai
+        answer = knowledge_ai.get_answer(user_q)
+        st.success(answer)
